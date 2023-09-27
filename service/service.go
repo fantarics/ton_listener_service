@@ -125,10 +125,12 @@ func (tl *TonListener) onTransaction(data transactionEventData, wallets []reposi
 
 		}
 
+		humanDestination := tongo.MustParseAccountID(tx.InMsg.Destination.Address).ToHuman(false, false)
+
 		trans := &repository.Transaction{
 			TxHash:             data.TxHash,
 			Hash:               outMsg.RawBody,
-			DestinationAddress: tx.InMsg.Destination.Address,
+			DestinationAddress: humanDestination,
 			IncomingValue:      0,
 			WalletID:           outMsg.Source.Address,
 			TransactionType:    "WITHDRAW",
@@ -160,8 +162,6 @@ func (tl *TonListener) onTransaction(data transactionEventData, wallets []reposi
 			lang = "en"
 		}
 
-		humanDestination := tongo.MustParseAccountID(tx.InMsg.Destination.Address).ToHuman(false, true)
-
 		txt := strings.Replace(transferredMap[lang], "{floatAmount}", tlb.MustFromNano(big.NewInt(int64(outMsg.Value*10)), 10).String(), 1)
 		txt = strings.Replace(txt, "{currency}", "TON", 1)
 		txt = strings.Replace(txt, "{destination}", humanDestination, 1)
@@ -190,11 +190,12 @@ func (tl *TonListener) onTransaction(data transactionEventData, wallets []reposi
 		}
 
 		datetime := time.Unix(tx.Utime, 0)
+		humanDestination := tongo.MustParseAccountID(tx.InMsg.Destination.Address).ToHuman(false, false)
 
 		trans := &repository.Transaction{
 			TxHash:             data.TxHash,
 			Hash:               tx.InMsg.RawBody,
-			DestinationAddress: tx.InMsg.Destination.Address,
+			DestinationAddress: humanDestination,
 			IncomingValue:      uint64(tx.InMsg.Value),
 			WalletID:           wallet.Address,
 			TransactionType:    "DEPOSIT",
