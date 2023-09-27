@@ -15,6 +15,7 @@ TON_URL - url for tonapi.io
 MAIN_ADDRESS - address of the main hot wallet
 TELEGRAM_TOKEN - token of the telegram bot
 CONFIG_TON - url to interact with wallets
+NOTIFICATION_DESTINATION - notification of the every deposit to telegram
 
 # Database configuration example
 DB_HOST=localhost

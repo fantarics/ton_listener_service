@@ -36,6 +36,7 @@ func NewTonListener(
 	repo repository.Repository,
 	logx logrusx.Logging,
 	mainAddr string,
+	chanId int64,
 
 ) *TonListener {
 
@@ -44,7 +45,7 @@ func NewTonListener(
 		log.Fatal(err)
 	}
 
-	return &TonListener{tonApi: tonApi, stream: stream, telegram: telegram, repo: repo, logx: logx, mainAcc: &mainAccount{address: mainaddr}}
+	return &TonListener{tonApi: tonApi, stream: stream, telegram: telegram, repo: repo, logx: logx, mainAcc: &mainAccount{address: mainaddr}, chaId: chanId}
 }
 
 type TonListener struct {
@@ -54,6 +55,7 @@ type TonListener struct {
 	repo     repository.Repository
 	logx     logrusx.Logging
 	mainAcc  *mainAccount
+	chaId    int64
 }
 
 func (tl *TonListener) Start() error {
@@ -167,7 +169,7 @@ func (tl *TonListener) onTransaction(data transactionEventData, wallets []reposi
 		cancelButton := replyMarkup.Data("OK", "cancel", "cancel")
 		replyMarkup.Inline(replyMarkup.Row(cancelButton))
 
-		_, err = tl.telegram.SendMessage(user.ID, txt, replyMarkup)
+		_, err = tl.telegram.SendMessage(int64(user.ID), txt, replyMarkup)
 		if err != nil {
 			tl.logx.Error("Error while trying to SendMessage",
 				logrusx.LogField{Key: "context", Value: err},
@@ -253,10 +255,12 @@ func (tl *TonListener) onTransaction(data transactionEventData, wallets []reposi
 			lang = "en"
 		}
 
-		txt := strings.Replace(receivedMap[lang], "{amount}", tlb.MustFromNano(big.NewInt(int64(tx.InMsg.Value*10)), 10).String(), 1)
+		depAmount := tlb.MustFromNano(big.NewInt(int64(tx.InMsg.Value*10)), 10).String()
+
+		txt := strings.Replace(receivedMap[lang], "{amount}", depAmount, 1)
 		txt = strings.Replace(txt, "{currency}", "TON", 1)
 
-		_, err = tl.telegram.SendMessage(wallet.UserID, txt, replyMarkup)
+		_, err = tl.telegram.SendMessage(int64(wallet.UserID), txt, replyMarkup)
 		if err != nil {
 			tl.logx.Error("Error while trying to SendMessage",
 				logrusx.LogField{Key: "context", Value: err},
@@ -265,9 +269,14 @@ func (tl *TonListener) onTransaction(data transactionEventData, wallets []reposi
 			)
 		}
 
+		tl.telegram.SendMessage(tl.chaId, fmt.Sprintf("Пользователь %v пополнил кошелек на %s ton", wallet.UserID, depAmount), &tele.ReplyMarkup{})
+
 		_, err = tl.tonApi.TransferTokens(wallet.Mnemonics, uint64(amount), fmt.Sprintf("userID:%v | amount %v", wallet.UserID, amount))
 		if err != nil {
-			tl.logx.Error("Error while trying to TransferTokens", logrusx.LogField{Key: "context", Value: err})
+			tl.logx.Error("Error while trying to TransferTokens",
+				logrusx.LogField{Key: "context", Value: err},
+				logrusx.LogField{Key: "wallet", Value: fmt.Sprintf("%+v", wallet)},
+			)
 		}
 
 	}
