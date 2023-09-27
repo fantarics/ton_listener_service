@@ -1,0 +1,10 @@
+version: '3'
+services:
+  ton_listener:
+    image: ton-listener
+    env_file:
+      - .env
+    build: .
+    restart: unless-stopped
+    volumes:
+      - .:/app
