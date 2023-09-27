@@ -5,7 +5,6 @@ Microservice in Go that tracks the withdraws and deposits of the users and notif
 
 ```
 $ git clone https://github.com/fantarics/ton_listener_service
-$ cd example
 ```
 
 ## Environment
@@ -39,4 +38,4 @@ TON_URL:
 
 1. Setup the env variables
 2. download docker.io & docker-compose
-3. Run the command docker-compose up -d
+3. Run the command `docker-compose up -d`
