@@ -9,7 +9,6 @@ type Config struct {
 	TelegramToken string `mapstructure:"TELEGRAM_TOKEN"`
 
 	ConfigTON string `mapstructure:"CONFIG_TON"`
-	Mnemonics string `mapstructure:"MNEMONICS"`
 }
 
 func NewConfig() (*Config, error) {
