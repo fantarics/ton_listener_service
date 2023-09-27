@@ -10,7 +10,7 @@ type Config struct {
 
 	ConfigTON string `mapstructure:"CONFIG_TON"`
 
-	NotificationDest string `mapstructure:"NOTIFICATION_DESTINATION"`
+	NotificationDest int64 `mapstructure:"NOTIFICATION_DESTINATION"`
 }
 
 func NewConfig() (*Config, error) {

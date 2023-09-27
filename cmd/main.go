@@ -44,7 +44,7 @@ func main() {
 
 	sql := repository.NewSQL(db)
 
-	tonListener := service.NewTonListener(api, stream, telegram, sql, logx, conf.MainAddress)
+	tonListener := service.NewTonListener(api, stream, telegram, sql, logx, conf.MainAddress, conf.NotificationDest)
 
 	defer func() {
 		if err := recover(); err != nil {
