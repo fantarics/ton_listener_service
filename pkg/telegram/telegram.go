@@ -6,7 +6,7 @@ import (
 )
 
 type TelegramAPI interface {
-	SendMessage(userID uint64, message string, markup *tele.ReplyMarkup) (*tele.Message, error)
+	SendMessage(userID int64, message string, markup *tele.ReplyMarkup) (*tele.Message, error)
 }
 
 func NewTelegramApi(token string) TelegramAPI {
@@ -27,7 +27,7 @@ type Telegram struct {
 	bot *tele.Bot
 }
 
-func (tg *Telegram) SendMessage(userID uint64, message string, markup *tele.ReplyMarkup) (*tele.Message, error) {
+func (tg *Telegram) SendMessage(userID int64, message string, markup *tele.ReplyMarkup) (*tele.Message, error) {
 	return tg.bot.Send(&tele.User{ID: int64(userID)}, message, markup)
 
 }
