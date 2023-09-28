@@ -13,10 +13,7 @@ import (
 
 func (api *api) TransferTokens(mnemonics []string, tons uint64, message string) (string, error) {
 
-	//client := api.tonapi.Client()
-	//ctx := client.StickyContext(context.Background())
-
-	w, err := wallet.FromSeed(api.tonapi, mnemonics, wallet.V4R2)
+	w, err := wallet.FromSeed(api.tonapi, mnemonics, wallet.V3R2)
 	if err != nil {
 		api.logx.Error("Error while trying to wallet.FromSeed in TransferTokens",
 			logrusx.LogField{Key: "context", Value: err},
@@ -24,36 +21,8 @@ func (api *api) TransferTokens(mnemonics []string, tons uint64, message string) 
 		return "", err
 	}
 
-	//err = w.Send(context.Background(),
-	//	wallet.SimpleTransfer{
-	//		Amount:  ton.OneTON,
-	//		Address: tongo.MustParseAccountID(api.config.MainAddress),
-	//		Comment: message,
-	//	})
-	//
-	//if err != nil {
-	//	api.logx.Fatal("Error while trying to Send",
-	//		logrusx.LogField{Key: "context", Value: err})
-	//	return "", err
-	//}
-	//return "", nil
-
-	//block, err := api.tonapi.CurrentMasterchainInfo(context.Background())
-	//if err != nil {
-	//	log.Fatalln("get masterchain info err: ", err.Error())
-	//	return "", err
-	//}
-
-	//balance, err := w.GetBalance(ctx, block)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//fmt.Println(balance.String())
-
 	addr := address.MustParseAddr(api.config.MainAddress)
-	fmt.Println(addr)
-	fmt.Println(message)
-	//
+
 	balance := tlb.MustFromNano(big.NewInt(int64(tons*10)), 10)
 
 	msg, err := generateMsg(message)

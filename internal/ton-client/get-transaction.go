@@ -2,7 +2,6 @@ package tonClient
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/BoryslavGlov/logrusx"
 	"github.com/valyala/fasthttp"
 	"tonListener/internal/entity"
@@ -30,8 +29,6 @@ func (api *api) GetTransactionByHash(hash string) entity.TxResult {
 			logrusx.LogField{Key: "body", Value: string(res.Body())},
 		)
 	}
-
-	fmt.Println(res.String())
 
 	err = json.Unmarshal(res.Body(), &TxResult)
 	if err != nil {

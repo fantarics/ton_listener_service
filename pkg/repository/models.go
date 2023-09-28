@@ -17,10 +17,10 @@ type Transaction struct {
 	WalletID           string `gorm:"column:wallet_id;foreignKey:WalletAddress"`
 	UserID             uint64 `gorm:"column:user_id;foreignKey:UserID"`
 
-	IncomingValue   uint64 `gorm:"column:incoming_value"`
-	SendedAmount    uint64 `gorm:"column:sended_amount;default:0;"`
-	TransactionType string `gorm:"column:transaction_type"`
-	CreatedTime     time.Time
+	IncomingValue   uint64    `gorm:"column:incoming_value"`
+	SendedAmount    uint64    `gorm:"column:sended_amount;default:0;"`
+	TransactionType string    `gorm:"column:transaction_type"`
+	CreatedTime     time.Time `gorm:"column:created_time"`
 }
 
 func (Network) TableName() string {
