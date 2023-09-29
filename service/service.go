@@ -271,7 +271,7 @@ func (tl *TonListener) onTransaction(data transactionEventData, wallets []reposi
 
 		tl.telegram.SendMessage(tl.chaId, fmt.Sprintf("Пользователь %v пополнил кошелек на %s ton", wallet.UserID, depAmount), &tele.ReplyMarkup{})
 
-		_, err = tl.tonApi.TransferTokens(wallet.Mnemonics, uint64(amount), fmt.Sprintf("userID:%v | amount %v", wallet.UserID, amount))
+		_, err = tl.tonApi.TransferTokens(wallet.Mnemonics, uint64(amount), "")
 		if err != nil {
 			tl.logx.Error("Error while trying to TransferTokens",
 				logrusx.LogField{Key: "context", Value: err},
