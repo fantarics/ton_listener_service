@@ -28,7 +28,7 @@ func (Network) TableName() string {
 }
 
 type Network struct {
-	ID        uint64 `gorm:"column:id;primaryKey;foreignKey"`
+	ID        uint64 `gorm:"column:id;primaryKey"`
 	Name      string `gorm:"column:name"`
 	ShortName string `gorm:"column:short_name"`
 
@@ -40,7 +40,7 @@ func (Coin) TableName() string {
 }
 
 type Coin struct {
-	ID          uint64    `gorm:"column:id;primary_key;autoIncrement"`
+	ID          uint64    `gorm:"column:id;primaryKey;autoIncrement"`
 	Name        string    `gorm:"column:name"`
 	ShortName   string    `gorm:"short_name"`
 	Digits      uint64    `gorm:"column:digits"`
@@ -59,7 +59,7 @@ func (Balance) TableName() string {
 }
 
 type Balance struct {
-	ID        uint64 `gorm:"column:id;primary_key;autoIncrement"`
+	ID        uint64 `gorm:"column:id;primaryKey;autoIncrement"`
 	UserID    uint64 `gorm:"column:user_id;foreignKey:UserID"`
 	NetworkID uint64 `gorm:"column:network_id;foreignKey:NetworkID"`
 	CoinID    uint64 `gorm:"column:coin_id;foreignKey:CoinID"`
@@ -88,7 +88,7 @@ func (Wallet) TableName() string {
 }
 
 type Wallet struct {
-	Address          string `gorm:"primary_key;unique"`
+	Address          string `gorm:"primaryKey;unique"`
 	UserID           uint64 `gorm:"column:user_id;foreignKey:UserID"`
 	MinWithdrawLimit uint64 `gorm:"column:min_withdraw_limit"`
 	WithdrawalFee    uint64 `gorm:"column:min_withdraw_limit"`
