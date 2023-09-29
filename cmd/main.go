@@ -35,11 +35,12 @@ func main() {
 	api := tonClient.NewApi(conf, logx)
 	stream := streamClient.NewClient(conf)
 	telegram := client.NewTelegramApi(conf.TelegramToken)
-	db, err := repository.NewDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable",
+	db, err := repository.NewDB(fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_NAME"),
+		os.Getenv("DB_PORT"),
 	))
 
 	sql := repository.NewSQL(db)
