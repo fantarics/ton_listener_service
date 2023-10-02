@@ -7,9 +7,8 @@ import (
 )
 
 func NewDB(connection string) (*gorm.DB, error) {
-	db, err := gorm.Open(postgres.New(postgres.Config{
-		DSN: connection,
-	}), &gorm.Config{})
+
+	db, err := gorm.Open(postgres.Open(connection), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal(err)

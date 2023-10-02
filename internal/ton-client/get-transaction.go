@@ -16,6 +16,8 @@ func (api *api) GetTransactionByHash(hash string) entity.TxResult {
 	req := fasthttp.AcquireRequest()
 	res := fasthttp.AcquireResponse()
 
+	defer fasthttp.ReleaseResponse(res)
+
 	api.request.CopyTo(req)
 
 	req.Header.SetMethod(fasthttp.MethodGet)
@@ -38,6 +40,5 @@ func (api *api) GetTransactionByHash(hash string) entity.TxResult {
 			logrusx.LogField{Key: "body", Value: string(res.Body())},
 		)
 	}
-
 	return TxResult
 }
