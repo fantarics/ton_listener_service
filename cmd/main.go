@@ -53,9 +53,7 @@ func main() {
 		}
 	}()
 
-	if err = tonListener.Start(); err != nil {
-		log.Panic("Error occurred in listener", err)
-	}
+	tonListener.Start()
 	select {}
 
 }

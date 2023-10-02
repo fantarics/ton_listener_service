@@ -58,9 +58,9 @@ type TonListener struct {
 	chaId    int64
 }
 
-func (tl *TonListener) Start() error {
+func (tl *TonListener) Start() {
 
-	err := tl.stream.Stream.Subscribe("", func(msg *sse.Event) {
+	tl.stream.Stream.Subscribe("", func(msg *sse.Event) {
 		switch string(msg.Event) {
 		case "message":
 			var data transactionEventData
@@ -80,10 +80,8 @@ func (tl *TonListener) Start() error {
 			}
 
 			go tl.onTransaction(data, wallets)
-
 		}
 	})
-	return err
 }
 
 func (tl *TonListener) onTransaction(data transactionEventData, wallets []repository.Wallet) {
